@@ -24,7 +24,7 @@ load_dotenv()
 
 # ── Config ──
 API_BASE     = "https://the-undesirables.com/api/litvm/grade"
-API_KEY      = os.getenv("GRADING_API_KEY", "tcg-grade-2026")
+API_KEY      = os.getenv("GRADING_API_KEY")
 RPC_URL      = "https://liteforge.rpc.caldera.xyz/http"
 CHAIN_ID     = 4441
 ESCROW_ADDR  = "0xe784d2AE4171De8f909eb638a60BE03B2341bB82"
