@@ -17,7 +17,7 @@ contract TCGPriceOracle {
         uint256 timestamp;
     }
 
-    address public owner;
+    address public immutable owner;
     uint256 public productCount;
     uint256 public totalUpdates;
 
