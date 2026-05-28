@@ -128,8 +128,7 @@ litvm-tcg-oracle/
 ├── contracts/
 │   └── TCGPriceOracle.sol      # On-chain price oracle
 ├── scripts/
-│   ├── litvm_grader.py         # AI grading worker
-│   └── .env.example            # Environment template
+│   └── litvm_grader.py         # AI grading worker
 ├── .gitignore
 ├── LICENSE                     # Business Source License 1.1
 └── README.md
@@ -137,32 +136,11 @@ litvm-tcg-oracle/
 
 ---
 
-## ⚡ Quick Start
+## ⚡ Try It
 
-### Prerequisites
-- Python 3.10+
-- [Ollama](https://ollama.ai) with `qwen2.5vl:7b`
-- Node.js 18+
+This is a live product — no setup required.
 
-### Run the AI Grader
-```bash
-# Install Qwen VL model
-ollama pull qwen2.5vl:7b
-
-# Setup
-cd scripts
-pip install web3 requests python-dotenv pillow pillow-heif
-cp .env.example .env  # Add your keys
-
-# Run
-python litvm_grader.py
-```
-
-### Run the Price Oracle
-```bash
-cd scripts
-python litvm_updater.py
-```
+👉 **[Launch the app](https://www.the-undesirables.com/litvm)** — browse prices for free, grade a card for 0.001 zkLTC (free testnet tokens).
 
 ---
 
