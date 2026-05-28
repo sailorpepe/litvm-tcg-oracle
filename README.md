@@ -188,7 +188,7 @@ python litvm_updater.py
 
 <div align="center">
 
-**Built by [The Undesirables](https://www.the-undesirables.com)**
+**Built by [THE UNDESIRABLES LLC](https://www.the-undesirables.com)**
 
 *The AI does the work. The blockchain makes it real.*
 
