@@ -1,0 +1,38 @@
+{
+  "name": "litvm-tcg-oracle",
+  "version": "2.0.0",
+  "description": "On-chain price oracle and AI card grader for 432K+ trading cards on LitVM LiteForge",
+  "author": "THE UNDESIRABLES LLC <security@the-undesirables.com>",
+  "license": "BUSL-1.1",
+  "keywords": [
+    "tcg",
+    "oracle",
+    "merkle",
+    "litvm",
+    "liteforge",
+    "trading-cards",
+    "pokemon",
+    "magic",
+    "yugioh",
+    "price-oracle",
+    "smart-contracts",
+    "solidity"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sailorpepe/litvm-tcg-oracle.git"
+  },
+  "homepage": "https://www.the-undesirables.com/litvm",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:v2": "hardhat run scripts/deploy_v2.py --network liteforge",
+    "deploy:merkle": "hardhat run scripts/merkle_deploy.py --network liteforge"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.2",
+    "@openzeppelin/contracts": "^5.6.1",
+    "dotenv": "^17.4.2",
+    "hardhat": "^2.22.17"
+  }
+}
