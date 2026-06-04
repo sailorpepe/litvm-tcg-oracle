@@ -8,6 +8,7 @@
 
 Built on [LitVM LiteForge](https://litvm.com/) — Litecoin's EVM-Compatible Layer 2
 
+[![GitHub stars](https://img.shields.io/github/stars/sailorpepe/litvm-tcg-oracle?style=flat-square)](https://github.com/sailorpepe/litvm-tcg-oracle/stargazers)
 [![License: BSL 1.1](https://img.shields.io/badge/License-BSL_1.1-blue.svg)](LICENSE)
 [![Chain](https://img.shields.io/badge/Chain-LitVM_LiteForge_(4441)-00dcff.svg)](https://liteforge.explorer.caldera.xyz)
 [![Products](https://img.shields.io/badge/Products-432K+-00ff6a.svg)](https://www.the-undesirables.com/litvm)
@@ -25,6 +26,24 @@ Built on [LitVM LiteForge](https://litvm.com/) — Litecoin's EVM-Compatible Lay
 *Live demo — [try it yourself →](https://www.the-undesirables.com/litvm)*
 
 </div>
+
+---
+
+## 📑 Table of Contents
+
+- [Overview](#-overview)
+- [Supported Games](#-supported-games)
+- [Architecture](#️-architecture)
+- [Smart Contracts](#-smart-contracts)
+- [REST API](#-rest-api)
+- [AI Grading Methodology](#-ai-grading-methodology)
+- [Tech Stack](#️-tech-stack)
+- [Project Structure](#-project-structure)
+- [Testing](#-testing)
+- [Quick Start](#-quick-start)
+- [Links](#-links)
+- [Stats](#-stats)
+- [License & Commercial Use](#-license--commercial-use)
 
 ---
 
@@ -403,3 +422,13 @@ Building a commercial product? Want guaranteed API access or white-label integra
 📧 **theundesirables7@gmail.com** · 🐦 **[@undesirables_ai](https://x.com/undesirables_ai)**
 
 © 2026 The Undesirables LLC
+
+---
+
+<div align="center">
+
+⭐ **If this project helped you, please star this repo** — it helps others find it.
+
+[Report Bug](../../issues) · [Request Feature](../../issues)
+
+</div>
