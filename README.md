@@ -18,6 +18,14 @@ Built on [LitVM LiteForge](https://litvm.com/) — Litecoin's EVM-Compatible Lay
 
 </div>
 
+<div align="center">
+
+<img src="assets/demo.gif" alt="LitVM TCG Oracle Demo" width="480" />
+
+*Live demo — [try it yourself →](https://www.the-undesirables.com/litvm)*
+
+</div>
+
 ---
 
 ## 🔮 Overview
