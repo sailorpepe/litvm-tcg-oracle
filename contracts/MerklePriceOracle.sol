@@ -98,6 +98,11 @@ contract MerklePriceOracle is Ownable2Step, Pausable {
         _unpause();
     }
 
+    /// @notice SECURITY: Finding #12 — Prevent accidental permanent lockout.
+    function renounceOwnership() public override onlyOwner {
+        revert("Cannot renounce ownership");
+    }
+
     // ─── Verification Functions ───────────────────────────
 
     /**
@@ -112,7 +117,7 @@ contract MerklePriceOracle is Ownable2Step, Pausable {
      */
     function verifyPrice(
         uint256 _productId,
-        uint16 _categoryId,
+        uint256 _categoryId,
         string calldata _name,
         uint256 _marketPrice,
         uint256 _lowPrice,
@@ -137,7 +142,7 @@ contract MerklePriceOracle is Ownable2Step, Pausable {
      */
     function verifyAndRecord(
         uint256 _productId,
-        uint16 _categoryId,
+        uint256 _categoryId,
         string calldata _name,
         uint256 _marketPrice,
         uint256 _lowPrice,
@@ -187,7 +192,7 @@ contract MerklePriceOracle is Ownable2Step, Pausable {
      */
     function computeLeaf(
         uint256 _productId,
-        uint16 _categoryId,
+        uint256 _categoryId,
         string calldata _name,
         uint256 _marketPrice,
         uint256 _lowPrice

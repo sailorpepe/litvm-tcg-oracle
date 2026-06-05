@@ -101,6 +101,11 @@ contract GradedPriceOracle is Ownable2Step, Pausable {
         _unpause();
     }
 
+    /// @notice SECURITY: Finding #12 — Prevent accidental permanent lockout.
+    function renounceOwnership() public override onlyOwner {
+        revert("Cannot renounce ownership");
+    }
+
     // ─── Verification Functions ───────────────────────────
 
     /**
