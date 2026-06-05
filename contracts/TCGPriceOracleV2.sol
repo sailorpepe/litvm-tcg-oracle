@@ -75,6 +75,17 @@ contract TCGPriceOracleV2 is Ownable2Step, Pausable {
     /// @dev Prevents out-of-gas failures from unbounded loops.
     uint256 public constant MAX_BATCH_SIZE = 100;
 
+    /// @notice Minimum time between TWAP observations for the same product.
+    /// @dev Prevents rapid-fire ring buffer overwrites that would defeat TWAP.
+    ///      SECURITY: Finding #2 — without this, owner could overwrite all 24
+    ///      slots in a single block.
+    uint256 public constant MIN_OBSERVATION_INTERVAL = 30 minutes;
+
+    /// @notice Maximum price deviation per update in basis points (50% = 5000 bps).
+    /// @dev Catches compromised data pipeline or stolen owner key pushing absurd prices.
+    ///      SECURITY: Finding #4 — prevents $0 or $999,999 price injection.
+    uint256 public constant MAX_PRICE_DEVIATION_BPS = 5000;
+
     // ─── State ────────────────────────────────────────────────
 
     /// @notice Total number of unique products registered in the oracle.
@@ -262,6 +273,25 @@ contract TCGPriceOracleV2 is Ownable2Step, Pausable {
         );
     }
 
+    /// @notice Get the latest price, reverting if stale.
+    /// @dev SECURITY: Finding #3 — strict variant that reverts on stale data.
+    ///      Use this in downstream protocols to prevent operating on outdated prices.
+    /// @param _productId TCGPlayer product ID
+    /// @return price     Market price in USD cents
+    /// @return timestamp Block timestamp of the last update
+    function getLatestPriceStrict(uint256 _productId) external view returns (
+        uint256 price,
+        uint256 timestamp
+    ) {
+        require(_productExists[_productId], "Product not found");
+        Product storage p = _products[_productIndex[_productId]];
+        require(
+            block.timestamp - p.timestamp < STALENESS_THRESHOLD,
+            "Price is stale"
+        );
+        return (p.marketPrice, p.timestamp);
+    }
+
     /// @notice Check if a product's price is fresh (updated recently).
     /// @param _productId TCGPlayer product ID
     /// @return True if updated within STALENESS_THRESHOLD, false otherwise
@@ -364,6 +394,13 @@ contract TCGPriceOracleV2 is Ownable2Step, Pausable {
         _unpause();
     }
 
+    /// @notice SECURITY: Finding #12 — Prevent accidental permanent lockout.
+    /// @dev Overrides Ownable's renounceOwnership to always revert.
+    ///      If ownership is renounced, the oracle becomes permanently unupdatable.
+    function renounceOwnership() public override onlyOwner {
+        revert("Cannot renounce ownership");
+    }
+
     // ─── Internal ─────────────────────────────────────────────
 
     /// @dev Insert or update a product in the registry and ring buffer.
@@ -383,6 +420,8 @@ contract TCGPriceOracleV2 is Ownable2Step, Pausable {
             emit ProductAdded(_productId, _name, _categoryId);
         } else {
             idx = _productIndex[_productId];
+            // SECURITY: Finding #4 — validate price deviation for existing products
+            _validatePriceDeviation(_productId, _marketPrice);
         }
 
         _products[idx] = Product({
@@ -398,9 +437,44 @@ contract TCGPriceOracleV2 is Ownable2Step, Pausable {
         totalUpdates++;
     }
 
+    /// @dev SECURITY: Finding #4 — Reject price updates that deviate more than
+    ///      MAX_PRICE_DEVIATION_BPS from the current price. Catches pipeline
+    ///      poisoning or compromised owner key pushing absurd prices.
+    function _validatePriceDeviation(uint256 _productId, uint256 _newPrice) internal view {
+        uint256 oldPrice = _products[_productIndex[_productId]].marketPrice;
+        if (oldPrice == 0) return; // skip if no previous price
+
+        uint256 deviation = _newPrice > oldPrice
+            ? ((_newPrice - oldPrice) * 10000) / oldPrice
+            : ((oldPrice - _newPrice) * 10000) / oldPrice;
+
+        require(deviation <= MAX_PRICE_DEVIATION_BPS, "Price deviation too large");
+    }
+
     /// @dev Write a price observation to the product's ring buffer.
+    ///      SECURITY: Finding #2 — enforces MIN_OBSERVATION_INTERVAL cooldown.
+    ///      If called too soon after the last observation, overwrites the most
+    ///      recent slot instead of advancing the head pointer.
     function _writeObservation(uint256 _productId, uint256 _price) internal {
+        // SECURITY: Finding #6 — explicit uint128 overflow check
+        require(_price <= type(uint128).max, "Price overflow");
+
         uint8 head = _ringHead[_productId];
+        uint8 prevHead = (head + RING_SIZE - 1) % RING_SIZE;
+
+        // Check cooldown: if the last observation is too recent, overwrite it
+        // instead of advancing the ring buffer head
+        if (_priceHistory[_productId][prevHead].timestamp > 0 &&
+            block.timestamp - _priceHistory[_productId][prevHead].timestamp < MIN_OBSERVATION_INTERVAL) {
+            // Overwrite the most recent observation (don't advance head)
+            _priceHistory[_productId][prevHead] = PriceObservation({
+                marketPrice: uint128(_price),
+                timestamp:   uint64(block.timestamp),
+                epoch:       uint64(totalUpdates)
+            });
+            return;
+        }
+
         _priceHistory[_productId][head] = PriceObservation({
             marketPrice: uint128(_price),
             timestamp:   uint64(block.timestamp),
