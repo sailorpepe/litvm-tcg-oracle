@@ -126,7 +126,7 @@ A trustless price oracle for the $50B+ trading card market — verifying 432,000
 |----------|---------|---------|----------|
 | **MerklePriceOracle** | [`0x96B1...70Cd`](https://liteforge.explorer.caldera.xyz/address/0x96B124f50156589274ADF8F674509374752170Cd) | Merkle root for 432K prices | ~162K (1 tx/day) |
 | **GradedPriceOracle** | [`0xc159...636B`](https://liteforge.explorer.caldera.xyz/address/0xc159550e9e751d6E75A0A06Bb04cfA2f59aD636B) | Graded prices Merkle root (PSA 10–5) | ~101K (1 tx/day) |
-| **TCGPriceOracleV2** | [`0xE748...8d0`](https://liteforge.explorer.caldera.xyz/address/0xE74860a658a6e642A449d989BfB6eB845074B8d0) | Live price feed + TWAP | ~450K (1 tx/hour) |
+| **TCGPriceOracleV2** | [`0x04a1...3072`](https://liteforge.explorer.caldera.xyz/address/0x04a128F4a7A0588D259F8abe9E260BbffF203072) | Live price feed + TWAP | ~450K (1 tx/hour) |
 | **TCGPriceOracle (V1)** | [`0xA79C...5771`](https://liteforge.explorer.caldera.xyz/address/0xA79C6b3922949fcaBb518f56f0B6e68Ca7115771) | Original oracle (retired) | — |
 | **GradingEscrow** | [`0xe784...bB82`](https://liteforge.explorer.caldera.xyz/address/0xe784d2AE4171De8f909eb638a60BE03B2341bB82) | Grading payment (0.001 zkLTC) | — |
 | **TCGOracleToken** | [`0x8D0A...9AD4`](https://liteforge.explorer.caldera.xyz/address/0x8D0AF701d318Be518F9ca6934B8F76Be24029AD4) | TCGO governance token (1M supply) | — |
