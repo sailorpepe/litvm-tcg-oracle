@@ -168,11 +168,30 @@ def main():
             print(f"  No image URL for request {request_id}, skipping")
             continue
         
+        import urllib.parse
+        import socket
+        import ipaddress
+        
         try:
+            parsed_url = urllib.parse.urlparse(image_url)
+            if parsed_url.scheme not in ("http", "https"):
+                raise ValueError("Invalid URL scheme")
+                
+            hostname = parsed_url.hostname
+            if not hostname:
+                raise ValueError("Missing hostname")
+                
+            ip_addr = socket.gethostbyname(hostname)
+            ip_obj = ipaddress.ip_address(ip_addr)
+            
+            # Block private networks, localhost, and cloud metadata
+            if ip_obj.is_private or ip_obj.is_loopback or ip_obj.is_link_local:
+                raise ValueError(f"Blocked private/internal IP address: {ip_addr}")
+                
             img_resp = requests.get(image_url, timeout=30)
             img_resp.raise_for_status()
         except Exception as e:
-            print(f"  Failed to download image: {e}")
+            print(f"  Failed to download image (SSRF Blocked/Error): {e}")
             continue
         
         # Save to temp file
