@@ -53,7 +53,7 @@ A trustless price oracle for the $50B+ trading card market — verifying 432,000
 
 | Feature | Description |
 |---------|-------------|
-| **📊 Merkle Price Oracle** | 432K products verified via a single on-chain Merkle root. Anyone can prove any price. |
+| **📊 Merkle Price Oracle** | 276K priced products (of 432K indexed) verified via a single on-chain Merkle root. Anyone can prove any price. |
 | **💎 Graded 100** | Top 100 graded cards ranked by PSA premium — switchable by grade (PSA 10–5) |
 | **⚡ Live Price Feed (V2)** | Top 50 blue-chip products updated hourly with 24-period TWAP ring buffer |
 | **🔍 AI Card Grader** | Upload a card photo → get PSA-style grade in ~60 seconds via Qwen 2.5 VL 7B |
@@ -129,6 +129,7 @@ A trustless price oracle for the $50B+ trading card market — verifying 432,000
 | **WeatherEdgeOracle** | [`0x9955...6696`](https://liteforge.explorer.caldera.xyz/address/0x9955afC8AE25405ed9FcE66c23fa8E02eB3b6696) | 10-city weather Merkle root (NWS vs Kalshi) | ~162K (1 tx/hour) |
 | **TCGPriceOracleV2** | [`0x04a1...3072`](https://liteforge.explorer.caldera.xyz/address/0x04a128F4a7A0588D259F8abe9E260BbffF203072) | Live price feed + TWAP | ~450K (1 tx/hour) |
 | **TCGPriceOracle (V1)** | [`0xA79C...5771`](https://liteforge.explorer.caldera.xyz/address/0xA79C6b3922949fcaBb518f56f0B6e68Ca7115771) | Original oracle (retired) | — |
+| **GradeNotary** | [`0x36C0...B570`](https://liteforge.explorer.caldera.xyz/address/0x36C02dA8a0983159322a80FFE9F24b1acfF8B570) | AI card grading on-chain notary (NFT) | ~90K |
 | **GradingEscrow** | [`0xe784...bB82`](https://liteforge.explorer.caldera.xyz/address/0xe784d2AE4171De8f909eb638a60BE03B2341bB82) | Grading payment (0.001 zkLTC) | — |
 | **TCGOracleToken** | [`0x8D0A...9AD4`](https://liteforge.explorer.caldera.xyz/address/0x8D0AF701d318Be518F9ca6934B8F76Be24029AD4) | TCGO governance token (1M supply) | — |
 
@@ -354,7 +355,7 @@ npx hardhat compile
 npx hardhat test
 
 # Deploy to LiteForge
-npx hardhat run scripts/deploy_v2.py --network liteforge
+python3 scripts/deploy_v2.py
 ```
 
 ---
