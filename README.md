@@ -127,7 +127,7 @@ A trustless price oracle for the $50B+ trading card market — verifying 432,000
 | **MerklePriceOracle** | [`0x96B1...70Cd`](https://liteforge.explorer.caldera.xyz/address/0x96B124f50156589274ADF8F674509374752170Cd) | Merkle root for 432K prices | ~162K (1 tx/day) |
 | **GradedPriceOracle** | [`0xc159...636B`](https://liteforge.explorer.caldera.xyz/address/0xc159550e9e751d6E75A0A06Bb04cfA2f59aD636B) | Graded prices Merkle root (PSA 10–5) | ~101K (1 tx/day) |
 | **WeatherEdgeOracle** | [`0x9955...6696`](https://liteforge.explorer.caldera.xyz/address/0x9955afC8AE25405ed9FcE66c23fa8E02eB3b6696) | 10-city weather Merkle root (NWS vs Kalshi) | ~162K (1 tx/hour) |
-| **TCGPriceOracleV2** | [`0x04a1...3072`](https://liteforge.explorer.caldera.xyz/address/0x04a128F4a7A0588D259F8abe9E260BbffF203072) | Live price feed + TWAP | ~450K (1 tx/hour) |
+| **TCGPriceOracleV2** | [`0x697b...720E`](https://liteforge.explorer.caldera.xyz/address/0x697bF6AE96fb05a47106abd012C39855A16a720E) | Live price feed + TWAP | ~450K (1 tx/hour) |
 | **TCGPriceOracle (V1)** | [`0xA79C...5771`](https://liteforge.explorer.caldera.xyz/address/0xA79C6b3922949fcaBb518f56f0B6e68Ca7115771) | Original oracle (retired) | — |
 | **GradeNotary** | [`0x36C0...B570`](https://liteforge.explorer.caldera.xyz/address/0x36C02dA8a0983159322a80FFE9F24b1acfF8B570) | AI card grading on-chain notary (NFT) | ~90K |
 | **GradingEscrow** | [`0xe784...bB82`](https://liteforge.explorer.caldera.xyz/address/0xe784d2AE4171De8f909eb638a60BE03B2341bB82) | Grading payment (0.001 zkLTC) | — |
