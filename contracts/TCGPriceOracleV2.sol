@@ -230,6 +230,8 @@ contract TCGPriceOracleV2 is Ownable2Step, Pausable {
 
             uint256 idx = _productIndex[pid];
             Product storage p = _products[idx];
+            // Security patch: validate price deviation on the batch update path
+            _validatePriceDeviation(pid, _marketPrices[i]);
             p.marketPrice = _marketPrices[i];
             p.lowPrice    = _lowPrices[i];
             p.timestamp   = block.timestamp;

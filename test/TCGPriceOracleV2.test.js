@@ -497,16 +497,16 @@ describe("TCGPriceOracleV2", function () {
       );
       await time.increase(3600);
 
-      // Batch update
+      // Batch update (within 50% deviation: 1000000 → 1400000 = 40%)
       await oracle.batchUpdatePricesOnly(
         [CHARIZARD.productId],
-        [2000000],
-        [1800000]
+        [1400000],
+        [1200000]
       );
 
       // TWAP should reflect both observations
       const twap = await oracle.getTWAP(CHARIZARD.productId, 2);
-      expect(twap).to.equal(1500000n); // (1000000 + 2000000) / 2
+      expect(twap).to.equal(1200000n); // (1000000 + 1400000) / 2
     });
   });
 
