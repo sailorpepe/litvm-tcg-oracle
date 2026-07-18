@@ -4,15 +4,15 @@
 
 # ⚡ LitVM TCG Oracle
 
-**On-Chain Price Oracle & AI Card Grader for 432,000+ Trading Cards**
+**On-Chain Price Oracle & AI Card Grader for 446,000+ Trading Cards**
 
 Built on [LitVM LiteForge](https://litvm.com/) — Litecoin's EVM-Compatible Layer 2
 
 [![GitHub stars](https://img.shields.io/github/stars/sailorpepe/litvm-tcg-oracle?style=flat-square)](https://github.com/sailorpepe/litvm-tcg-oracle/stargazers)
 [![License: BSL 1.1](https://img.shields.io/badge/License-BSL_1.1-blue.svg)](LICENSE)
 [![Chain](https://img.shields.io/badge/Chain-LitVM_LiteForge_(4441)-00dcff.svg)](https://liteforge.explorer.caldera.xyz)
-[![Products](https://img.shields.io/badge/Products-432K+-00ff6a.svg)](https://www.the-undesirables.com/litvm)
-[![Price Rows](https://img.shields.io/badge/Price_Data-12.7M_rows-f472b6.svg)](#-data-pipeline)
+[![Products](https://img.shields.io/badge/Products-446K+-00ff6a.svg)](https://www.the-undesirables.com/litvm)
+[![Price Rows](https://img.shields.io/badge/Price_Data-26.9M_rows-f472b6.svg)](#-data-pipeline)
 [![Tests](https://img.shields.io/badge/Tests-Passing-22c55e.svg)](#-testing)
 
 [Live App](https://www.the-undesirables.com/litvm) · [Block Explorer](https://liteforge.explorer.caldera.xyz) · [API Docs](https://www.the-undesirables.com/docs)
@@ -49,11 +49,11 @@ Built on [LitVM LiteForge](https://litvm.com/) — Litecoin's EVM-Compatible Lay
 
 ## 🔮 Overview
 
-A trustless price oracle for the $50B+ trading card market — verifying 432,000+ product prices on-chain using Merkle proofs, with live price feeds for the top 50 blue-chip cards and AI-powered card grading.
+A trustless price oracle for the $50B+ trading card market — verifying 284,000+ actively-priced products on-chain using Merkle proofs (of 446K+ indexed), with live price feeds for the top 50 blue-chip cards and AI-powered card grading.
 
 | Feature | Description |
 |---------|-------------|
-| **📊 Merkle Price Oracle** | 276K priced products (of 432K indexed) verified via a single on-chain Merkle root. Anyone can prove any price. |
+| **📊 Merkle Price Oracle** | 284K priced products (of 446K indexed) verified via a single on-chain Merkle root. Anyone can prove any price. |
 | **💎 Graded 100** | Top 100 graded cards ranked by PSA premium — switchable by grade (PSA 10–5) |
 | **⚡ Live Price Feed (V2)** | Top 50 blue-chip products updated hourly with 24-period TWAP ring buffer |
 | **🔍 AI Card Grader** | Upload a card photo → get PSA-style grade in ~60 seconds via Qwen 2.5 VL 7B |
@@ -78,7 +78,7 @@ A trustless price oracle for the $50B+ trading card market — verifying 432,000
 | 🔥 Dragon Ball | 56 | 5K+ | TCGPlayer via TCGCSV |
 | + 4 more | — | — | TCGPlayer via TCGCSV |
 
-**Total: 432,000+ products · 12.7M price rows · 30 days of daily snapshots**
+**Total: 446,000+ products · 26.9M price rows · 100+ days of daily snapshots**
 
 ---
 
@@ -91,18 +91,18 @@ A trustless price oracle for the $50B+ trading card market — verifying 432,000
                            │                                  │
                            │  ┌────────────────────────────┐  │
                            │  │   MerklePriceOracle        │  │
-                           │  │   432K products            │  │
+                           │  │   446K products            │  │
       ┌──────────────┐     │  │   1 Merkle root / day      │  │
       │  TCGCSV API  │     │  └────────────────────────────┘  │
       │  (TCGPlayer)  │     │                                  │
-      │  432K products │────▶│  ┌────────────────────────────┐  │
+      │  446K products │────▶│  ┌────────────────────────────┐  │
       └──────────────┘     │  │   TCGPriceOracleV2         │  │
              │             │  │   50 blue-chips             │  │
              ▼             │  │   Hourly updates + TWAP     │  │
       ┌──────────────┐     │  └────────────────────────────┘  │
       │  Mac Mini    │────▶│                                  │
       │  SQLite DB   │     └──────────────────────────────────┘
-      │  12.7M rows  │
+      │  26.9M rows  │
       │  FastAPI      │────▶  REST API (search, history, eBay)
       │  Ollama       │────▶  AI Card Grading (Qwen 2.5 VL 7B)
       └──────────────┘
@@ -124,7 +124,7 @@ A trustless price oracle for the $50B+ trading card market — verifying 432,000
 
 | Contract | Address | Purpose | Gas Cost |
 |----------|---------|---------|----------|
-| **MerklePriceOracle** | [`0x96B1...70Cd`](https://liteforge.explorer.caldera.xyz/address/0x96B124f50156589274ADF8F674509374752170Cd) | Merkle root for 432K prices | ~162K (1 tx/day) |
+| **MerklePriceOracle** | [`0x96B1...70Cd`](https://liteforge.explorer.caldera.xyz/address/0x96B124f50156589274ADF8F674509374752170Cd) | Merkle root for 284K prices | ~162K (hourly) |
 | **GradedPriceOracle** | [`0xc159...636B`](https://liteforge.explorer.caldera.xyz/address/0xc159550e9e751d6E75A0A06Bb04cfA2f59aD636B) | Graded prices Merkle root (PSA 10–5) | ~101K (1 tx/day) |
 | **WeatherEdgeOracle** | [`0x9955...6696`](https://liteforge.explorer.caldera.xyz/address/0x9955afC8AE25405ed9FcE66c23fa8E02eB3b6696) | 10-city weather Merkle root (NWS vs Kalshi) | ~162K (1 tx/hour) |
 | **TCGPriceOracleV2** | [`0x697b...720E`](https://liteforge.explorer.caldera.xyz/address/0x697bF6AE96fb05a47106abd012C39855A16a720E) | Live price feed + TWAP | ~450K (1 tx/hour) |
@@ -135,7 +135,7 @@ A trustless price oracle for the $50B+ trading card market — verifying 432,000
 
 ### MerklePriceOracle — How It Works
 
-The core innovation: instead of writing 432K prices on-chain (impossible gas cost), we build a Merkle tree off-chain and push only the **32-byte root** on-chain. Anyone can verify any individual price by requesting a proof from the API.
+The core innovation: instead of writing 284K prices on-chain (impossible gas cost), we build a Merkle tree off-chain and push only the **32-byte root** on-chain. Anyone can verify any individual price by requesting a proof from the API.
 
 ```
 Leaf encoding (double-hash, OpenZeppelin standard):
@@ -172,7 +172,7 @@ All endpoints are free and public. The oracle server runs on a Mac Mini behind a
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/api/v1/search?query=charizard&game=Pokemon&limit=20` | GET | Search 432K products with game filtering |
+| `/api/v1/search?query=charizard&game=Pokemon&limit=20` | GET | Search 446K products with game filtering |
 | `/api/v1/history?product_id=197780` | GET | 30-day price history + stats + snapshot |
 | `/api/v1/ebay-comps?query=Charizard+Base+Set&limit=8` | GET | Active eBay listings for price comparison |
 | `/api/v1/market?game=Pokemon&limit=10` | GET | Top cards by market price per game |
