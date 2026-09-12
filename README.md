@@ -91,7 +91,7 @@ A trustless price oracle for the $50B+ trading card market — verifying 284,000
 |---------|-------------|
 | **📊 Merkle Price Oracle** | 290K priced products (of 456K+ indexed) verified via a single on-chain Merkle root. Anyone can prove any price. |
 | **💎 Graded 100** | Top 100 graded cards ranked by PSA premium — switchable by grade (PSA 10–5) |
-| **⚡ Live Price Feed (V2)** | Top 50 blue-chip products updated hourly with 24-period TWAP ring buffer |
+| **⚡ Price Feed (V2)** | Top 50 blue-chip products, 24-period TWAP ring buffer — the hourly updater skips while the USD source is frozen (since 2026-09-07) |
 | **🔍 AI Card Grader** | Upload a card photo → get PSA-style grade in ~60 seconds via Qwen 2.5 VL 7B |
 | **🔎 eBay Comps** | Real-time active eBay listings via Browse API for price comparison |
 | **🌐 Free REST API** | Search, history, eBay comps — free for any app or agent to consume |
@@ -103,16 +103,16 @@ A trustless price oracle for the $50B+ trading card market — verifying 284,000
 
 | Category | Category ID | Products | Source |
 |----------|-------------|----------|--------|
-| ⚡ Pokémon | 3 | 100K+ | TCGPlayer via TCGCSV |
-| 🧙 Magic: The Gathering | 1 | 120K+ | TCGPlayer via TCGCSV |
-| 🐉 Yu-Gi-Oh! | 2 | 80K+ | TCGPlayer via TCGCSV |
-| 🏴‍☠️ One Piece | 64 | 15K+ | TCGPlayer via TCGCSV |
-| ✨ Disney Lorcana | 71 | 5K+ | TCGPlayer via TCGCSV |
-| ⚔️ Flesh & Blood | 63 | 10K+ | TCGPlayer via TCGCSV |
-| 🦎 Digimon | 62 | 8K+ | TCGPlayer via TCGCSV |
-| ⭐ Star Wars Unlimited | 82 | 3K+ | TCGPlayer via TCGCSV |
-| 🔥 Dragon Ball | 56 | 5K+ | TCGPlayer via TCGCSV |
-| + 4 more | — | — | TCGPlayer via TCGCSV |
+| ⚡ Pokémon | 3 | 100K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| 🧙 Magic: The Gathering | 1 | 120K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| 🐉 Yu-Gi-Oh! | 2 | 80K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| 🏴‍☠️ One Piece | 64 | 15K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| ✨ Disney Lorcana | 71 | 5K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| ⚔️ Flesh & Blood | 63 | 10K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| 🦎 Digimon | 62 | 8K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| ⭐ Star Wars Unlimited | 82 | 3K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| 🔥 Dragon Ball | 56 | 5K+ | TCGplayer market price (USD panel; frozen 2026-09-07) |
+| + 4 more | — | — | TCGplayer market price (USD panel; frozen 2026-09-07) |
 
 **Total: 446,000+ products · 26.9M price rows · 100+ days of daily snapshots**
 
@@ -129,12 +129,12 @@ A trustless price oracle for the $50B+ trading card market — verifying 284,000
                            │  │   MerklePriceOracle        │  │
                            │  │   456K+ products            │  │
       ┌──────────────┐     │  │   1 Merkle root / day      │  │
-      │  TCGCSV API  │     │  └────────────────────────────┘  │
+      │  USD panel   │     │  └────────────────────────────┘  │
       │  (TCGPlayer)  │     │                                  │
       │  456K+ products │────▶│  ┌────────────────────────────┐  │
       └──────────────┘     │  │   TCGPriceOracleV2         │  │
              │             │  │   50 blue-chips             │  │
-             ▼             │  │   Hourly updates + TWAP     │  │
+             ▼             │  │   TWAP (frozen since 09-07) │  │
       ┌──────────────┐     │  └────────────────────────────┘  │
       │  Mac Mini    │────▶│                                  │
       │  SQLite DB   │     └──────────────────────────────────┘
@@ -193,7 +193,7 @@ Leaf encoding (double-hash, OpenZeppelin standard):
 
 ### TCGPriceOracleV2 — Live Feed
 
-Tracks 50 blue-chip products with hourly on-chain updates:
+Tracks 50 blue-chip products; the hourly updater only pushes when prices change, and the USD source has been frozen since 2026-09-07:
 
 - Batch update in a single transaction (V1 used 5 separate txs)
 - 24-period TWAP ring buffer for time-weighted average prices
@@ -211,7 +211,7 @@ All endpoints are free and public. The oracle server runs on a Mac Mini behind a
 | `/api/v1/search?query=charizard&game=Pokemon&limit=20` | GET | Search 456K+ products with game filtering |
 | `/api/v1/history?product_id=197780` | GET | 30-day price history + stats + snapshot |
 | `/api/v1/ebay-comps?query=Charizard+Base+Set&limit=8` | GET | Active eBay listings for price comparison |
-| `/api/v1/market?game=Pokemon&limit=10` | GET | Top cards by market price per game |
+| `/api/v1/market?game=Pokemon&limit=10` | GET | **SUSPENDED 2026-09-12** — USD panel frozen; returns `200 {status: suspended}`, not charged |
 
 ### Search Response Example
 
@@ -293,7 +293,7 @@ The grader follows **PSA/Beckett standards** using Qwen 2.5 VL 7B (local inferen
 Blockchain       LitVM LiteForge (Litecoin L2, Chain ID 4441)
 Smart Contracts  Solidity ^0.8.28 (OpenZeppelin 5.x — Ownable2Step, Pausable, MerkleProof)
 AI Model         Qwen 2.5 VL 7B via Ollama (local inference, zero cloud)
-Price Data       TCGPlayer market data via TCGCSV (432K products, daily refresh)
+Price Data       TCGplayer market prices, 456,616 products — USD panel FROZEN 2026-09-07; Japanese two-sided quotes (365K cards) refresh daily
 eBay Comps       eBay Browse API (OAuth2 Client Credentials)
 Database         SQLite (12.7M rows, 2 indexes, ~1.2GB)
 Backend          FastAPI + uvicorn (Python 3.10+)
@@ -321,7 +321,7 @@ litvm-tcg-oracle/
 │   ├── merkle_builder.py           # Builds Merkle tree from SQLite → pushes root on-chain
 │   ├── merkle_deploy.py            # Deploys MerklePriceOracle contract
 │   ├── deploy_v2.py                # Deploys TCGPriceOracleV2 contract
-│   ├── litvm_updater_v2.py         # Hourly cron — pushes top 50 prices to V2
+│   ├── litvm_updater_v2.py         # Hourly cron — pushes top 50 prices to V2 (skips while USD frozen)
 │   └── litvm_grader.py             # AI grading worker (Qwen 2.5 VL → PSA score)
 ├── test/
 │   ├── MerklePriceOracle.test.js   # 31 unit tests for Merkle verification
@@ -416,7 +416,7 @@ python3 scripts/deploy_v2.py
 |--------|-------|
 | Products tracked | **432,000+** across 13 game categories |
 | Price data rows | **12.7 million** (30 days of daily snapshots) |
-| On-chain updates | Merkle root daily + Graded root daily + V2 hourly + Weather hourly |
+| On-chain updates | Graded root daily · Japanese + sports panels daily · Weather hourly · USD Merkle root + V2 TWAP frozen since 2026-09-07 |
 | Search latency | **~50ms** across 432K products |
 | AI grading time | **~60 seconds** per card |
 | Infrastructure | 1 Mac Mini (M-series, 16GB) + Cloudflare tunnel |
